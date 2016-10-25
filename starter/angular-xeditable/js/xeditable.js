@@ -1,7 +1,7 @@
 /*!
 angular-xeditable - 0.4.0
 Edit-in-place for angular.js
-Build date: 2016-09-21 
+Build date: 2016-10-25 
 */
 /**
  * Angular-xeditable module 
@@ -2472,7 +2472,7 @@ angular.module('xeditable').factory('editableThemes', function() {
       cancelTpl:   '<button type="button" class="btn btn-default" ng-click="$form.$cancel()">'+
                      '<span></span>'+
                    '</button>',
-      resetTpl:    '<button type="reset" class="btn btn-danger">clear</button>',
+      resetTpl:    '<button type="reset" class="btn btn-danger"><span></span></button>',
 
       //bs3 specific prop to change buttons class: btn-sm, btn-lg
       buttonsClass: '',
@@ -2518,7 +2518,7 @@ angular.module('xeditable').factory('editableThemes', function() {
         }
       }
     },
-    
+
     //semantic-ui
     'semantic': {
       formTpl:     '<form class="editable-wrap ui form" ng-class="{\'error\': $error}" role="form"></form>',
