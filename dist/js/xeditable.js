@@ -592,7 +592,7 @@ angular.module('xeditable').directive('editableUiSelect',['editableDirectiveFact
         return dir;
     }]);
 /**
- * EditableController class. 
+ * EditableController class.
  * Attached to element with `editable-xxx` directive.
  *
  * @namespace editable-element
@@ -600,7 +600,7 @@ angular.module('xeditable').directive('editableUiSelect',['editableDirectiveFact
 /*
 TODO: this file should be refactored to work more clear without closures!
 */
-angular.module('xeditable').factory('editableController', 
+angular.module('xeditable').factory('editableController',
   ['$q', 'editableUtils',
   function($q, editableUtils) {
 
@@ -641,32 +641,32 @@ angular.module('xeditable').factory('editableController',
 
     /**
      * Attributes defined with `e-*` prefix automatically transferred from original element to
-     * control.  
+     * control.
      * For example, if you set `<span editable-text="user.name" e-style="width: 100px"`>
-     * then input will appear as `<input style="width: 100px">`.  
+     * then input will appear as `<input style="width: 100px">`.
      * See [demo](#text-customize).
-     * 
+     *
      * @var {any|attribute} e-*
      * @memberOf editable-element
-     */ 
+     */
 
     /**
      * Whether to show ok/cancel buttons. Values: `right|no`.
-     * If set to `no` control automatically submitted when value changed.  
-     * If control is part of form buttons will never be shown. 
-     * 
+     * If set to `no` control automatically submitted when value changed.
+     * If control is part of form buttons will never be shown.
+     *
      * @var {string|attribute} buttons
      * @memberOf editable-element
-     */    
-    self.buttons = 'right'; 
+     */
+    self.buttons = 'right';
     /**
      * Action when control losses focus. Values: `cancel|submit|ignore`.
      * Has sense only for single editable element.
      * Otherwise, if control is part of form - you should set `blur` of form, not of individual element.
-     * 
+     *
      * @var {string|attribute} blur
      * @memberOf editable-element
-     */     
+     */
     // no real `blur` property as it is transferred to editable form
 
     //init
@@ -701,9 +701,9 @@ angular.module('xeditable').factory('editableController',
       }
 
       /**
-       * Called when control is shown.  
+       * Called when control is shown.
        * See [demo](#select-remote).
-       * 
+       *
        * @var {method|attribute} onshow
        * @memberOf editable-element
        */
@@ -714,8 +714,8 @@ angular.module('xeditable').factory('editableController',
       }
 
       /**
-       * Called when control is hidden after both save or cancel.  
-       * 
+       * Called when control is hidden after both save or cancel.
+       *
        * @var {method|attribute} onhide
        * @memberOf editable-element
        */
@@ -726,8 +726,8 @@ angular.module('xeditable').factory('editableController',
       }
 
       /**
-       * Called when control is cancelled.  
-       * 
+       * Called when control is cancelled.
+       *
        * @var {method|attribute} oncancel
        * @memberOf editable-element
        */
@@ -735,12 +735,19 @@ angular.module('xeditable').factory('editableController',
         self.oncancel = function() {
           return $parse($attrs.oncancel)($scope);
         };
-      }          
+      }
+
+      // onbeforereset
+      if ($attrs.onbeforereset) {
+        self.onbeforereset = function() {
+          return self.catchError($parse($attrs.onbeforereset)($scope));
+        };
+      }
 
       /**
-       * Called during submit before value is saved to model.  
+       * Called during submit before value is saved to model.
        * See [demo](#onbeforesave).
-       * 
+       *
        * @var {method|attribute} onbeforesave
        * @memberOf editable-element
        */
@@ -751,9 +758,9 @@ angular.module('xeditable').factory('editableController',
       }
 
       /**
-       * Called during submit after value is saved to model.  
+       * Called during submit after value is saved to model.
        * See [demo](#onaftersave).
-       * 
+       *
        * @var {method|attribute} onaftersave
        * @memberOf editable-element
        */
@@ -809,7 +816,7 @@ angular.module('xeditable').factory('editableController',
         }
 
         self.controlsEl.append(self.buttonsEl);
-        
+
         self.inputEl.addClass('editable-has-buttons');
       }
 
@@ -835,14 +842,14 @@ angular.module('xeditable').factory('editableController',
         } else {
           continue;
         }
-        
-        // exclude `form` and `ng-submit`, 
+
+        // exclude `form` and `ng-submit`,
         if(transferAttr === 'Form' || transferAttr === 'NgSubmit') {
           continue;
         }
 
         // convert back to lowercase style
-        transferAttr = transferAttr.substring(0, 1).toLowerCase() + editableUtils.camelToDash(transferAttr.substring(1));  
+        transferAttr = transferAttr.substring(0, 1).toLowerCase() + editableUtils.camelToDash(transferAttr.substring(1));
 
         // workaround for attributes without value (e.g. `multiple = "multiple"`)
         // except for 'e-value'
@@ -875,8 +882,8 @@ angular.module('xeditable').factory('editableController',
     // copy MUST NOT be used for `select-multiple` with objects as items
     // copy MUST be used for `checklist`
     self.setLocalValue = function() {
-      self.scope.$data = self.useCopy ? 
-        angular.copy(valueGetter($scope.$parent)) : 
+      self.scope.$data = self.useCopy ?
+        angular.copy(valueGetter($scope.$parent)) :
         valueGetter($scope.$parent);
     };
 
@@ -1062,7 +1069,7 @@ angular.module('xeditable').factory('editableController',
     */
     self.handleEmpty = function() {
       var val = valueGetter($scope.$parent);
-      var isEmpty = val === null || val === undefined || val === "" || (angular.isArray(val) && val.length === 0); 
+      var isEmpty = val === null || val === undefined || val === "" || (angular.isArray(val) && val.length === 0);
       $element.toggleClass('editable-empty', isEmpty);
     };
 
@@ -1231,9 +1238,9 @@ function($parse, $compile, editableThemes, $rootScope, $document, editableContro
 /*
 Returns editableForm controller
 */
-angular.module('xeditable').factory('editableFormController', 
-  ['$parse', '$document', '$rootScope', 'editablePromiseCollection', 'editableUtils',
-  function($parse, $document, $rootScope, editablePromiseCollection, editableUtils) {
+angular.module('xeditable').factory('editableFormController',
+  ['$parse', '$document', '$rootScope', 'editablePromiseCollection', 'editableUtils', '$q',
+  function($parse, $document, $rootScope, editablePromiseCollection, editableUtils, $q) {
 
   // array of opened editable forms
   var shown = [];
@@ -1253,7 +1260,7 @@ angular.module('xeditable').factory('editableFormController',
     }
     return false;
   };
-  
+
   //Check if it is a real blur : if the click event appear on a shown editable elem, this is not a blur.
   var isBlur = function(shown, event) {
     var isBlur = true;
@@ -1263,11 +1270,11 @@ angular.module('xeditable').factory('editableFormController',
       var element = v.editorEl[0];
       if (isSelfOrDescendant(element, event.target))
         isBlur = false;
-      
+
     });
     return isBlur;
   };
-  
+
   // bind click to body: cancel|submit|ignore forms
   $document.bind('click', function(e) {
     // ignore right/middle button click
@@ -1306,12 +1313,12 @@ angular.module('xeditable').factory('editableFormController',
       });
     }
   });
- 
+
   $rootScope.$on('closeEdit', function() {
     for(var i=0; i < shown.length; i++) {
       shown[i].$hide();
     }
-  }); 
+  });
 
   var base = {
     $addEditable: function(editable) {
@@ -1321,7 +1328,7 @@ angular.module('xeditable').factory('editableFormController',
       //'on' is not supported in angular 1.0.8
       editable.elem.bind('$destroy', angular.bind(this, this.$removeEditable, editable));
 
-      //bind editable's local $form to self (if not bound yet, below form) 
+      //bind editable's local $form to self (if not bound yet, below form)
       if (!editable.scope.$form) {
         editable.scope.$form = this;
       }
@@ -1345,7 +1352,7 @@ angular.module('xeditable').factory('editableFormController',
 
     /**
      * Shows form with editable controls.
-     * 
+     *
      * @method $show()
      * @memberOf editable-form
      */
@@ -1371,9 +1378,9 @@ angular.module('xeditable').factory('editableFormController',
 
       //wait promises and activate
       pc.then({
-        onWait: angular.bind(this, this.$setWaiting), 
-        onTrue: angular.bind(this, this.$activate), 
-        onFalse: angular.bind(this, this.$activate), 
+        onWait: angular.bind(this, this.$setWaiting),
+        onTrue: angular.bind(this, this.$activate),
+        onFalse: angular.bind(this, this.$activate),
         onString: angular.bind(this, this.$activate)
       });
 
@@ -1385,13 +1392,13 @@ angular.module('xeditable').factory('editableFormController',
         if(editableUtils.indexOf(shown, this) === -1) {
           shown.push(this);
         }
-      }), 0);      
+      }), 0);
     },
 
     /**
      * Sets focus on form field specified by `name`.<br/>
      * When trying to set the focus on a form field of a new row in the editable table, the `$activate` call needs to be wrapped in a `$timeout` call so that the form is rendered before the `$activate` function is called.
-     * 
+     *
      * @method $activate(name)
      * @param {string} name name of field
      * @memberOf editable-form
@@ -1424,14 +1431,14 @@ angular.module('xeditable').factory('editableFormController',
 
     /**
      * Hides form with editable controls without saving.
-     * 
+     *
      * @method $hide()
      * @memberOf editable-form
      */
     $hide: function() {
       if (!this.$visible) {
         return;
-      }      
+      }
       this.$visible = false;
       // self hide
       this.$onhide();
@@ -1446,23 +1453,58 @@ angular.module('xeditable').factory('editableFormController',
 
     /**
      * Triggers `oncancel` event and calls `$hide()`.
-     * 
+     *
      * @method $cancel()
      * @memberOf editable-form
      */
     $cancel: function() {
       if (!this.$visible) {
         return;
-      }      
+      }
       // self cancel
       this.$oncancel();
-      // children's cancel      
+      // children's cancel
       angular.forEach(this.$editables, function(editable) {
         editable.cancel();
       });
       // self hide
       this.$hide();
-    },    
+    },
+
+    /**
+     * Triggers `onreset` event and calls `$hide()`.
+     *
+     * @method $reset()
+     * @memberOf editable-form
+     */
+    $reset: function() {
+      if (!this.$visible) {
+        return;
+      }
+
+      var self = this;
+
+      // self reset
+      $q.when()
+        .then(function(result) {
+          return self.$onbeforereset();
+        })
+        .then(function(result) {
+          // children's cancel
+          angular.forEach(self.$editables, function(editable) {
+            if (editable.onbeforereset) {
+              editable.onbeforereset();
+            }
+          });
+          // self hide
+          self.$hide();
+
+          return "ok";
+        });
+        // .catch(function(error) {
+        //   console.log("error: %o", error);
+        // });
+    },
 
     $setWaiting: function(value) {
       this.$waiting = !!value;
@@ -1475,7 +1517,7 @@ angular.module('xeditable').factory('editableFormController',
 
     /**
      * Shows error message for particular field.
-     * 
+     *
      * @method $setError(name, msg)
      * @param {string} name name of field
      * @param {string} msg error message
@@ -1492,7 +1534,7 @@ angular.module('xeditable').factory('editableFormController',
     $submit: function() {
       if (this.$waiting) {
         return;
-      } 
+      }
 
       //clear errors
       this.$setError(null, '');
@@ -1510,9 +1552,9 @@ angular.module('xeditable').factory('editableFormController',
       - string: keep form open and show error
       */
       pc.then({
-        onWait: angular.bind(this, this.$setWaiting), 
-        onTrue: angular.bind(this, checkSelf, true), 
-        onFalse: angular.bind(this, checkSelf, false), 
+        onWait: angular.bind(this, this.$setWaiting),
+        onTrue: angular.bind(this, checkSelf, true),
+        onFalse: angular.bind(this, checkSelf, false),
         onString: angular.bind(this, this.$activate)
       });
 
@@ -1521,9 +1563,9 @@ angular.module('xeditable').factory('editableFormController',
         var pc = editablePromiseCollection();
         pc.when(this.$onbeforesave());
         pc.then({
-          onWait: angular.bind(this, this.$setWaiting), 
-          onTrue: childrenTrue ? angular.bind(this, this.$save) : angular.bind(this, this.$hide), 
-          onFalse: angular.bind(this, this.$hide), 
+          onWait: angular.bind(this, this.$setWaiting),
+          onTrue: childrenTrue ? angular.bind(this, this.$save) : angular.bind(this, this.$hide),
+          onFalse: angular.bind(this, this.$hide),
           onString: angular.bind(this, this.$activate)
         });
       }
@@ -1548,9 +1590,9 @@ angular.module('xeditable').factory('editableFormController',
       - string: keep form open and show error
       */
       pc.then({
-        onWait: angular.bind(this, this.$setWaiting), 
-        onTrue: angular.bind(this, this.$hide), 
-        onFalse: angular.bind(this, this.$hide), 
+        onWait: angular.bind(this, this.$setWaiting),
+        onTrue: angular.bind(this, this.$hide),
+        onFalse: angular.bind(this, this.$hide),
         onString: angular.bind(this, this.$activate)
       });
     },
@@ -1559,7 +1601,9 @@ angular.module('xeditable').factory('editableFormController',
     $oncancel: angular.noop,
     $onhide: angular.noop,
     $onbeforesave: angular.noop,
-    $onaftersave: angular.noop
+    $onaftersave: angular.noop,
+
+    $onbeforereset: angular.noop
   };
 
   return function() {
@@ -1567,14 +1611,14 @@ angular.module('xeditable').factory('editableFormController',
       $editables: [],
       /**
        * Form visibility flag.
-       * 
+       *
        * @var {bool} $visible
        * @memberOf editable-form
        */
       $visible: false,
       /**
        * Form waiting flag. It becomes `true` when form is loading or saving data.
-       * 
+       *
        * @var {bool} $waiting
        * @memberOf editable-form
        */
@@ -1587,7 +1631,7 @@ angular.module('xeditable').factory('editableFormController',
 }]);
 
 /**
- * EditableForm directive. Should be defined in <form> containing editable controls.  
+ * EditableForm directive. Should be defined in <form> containing editable controls.
  * It add some usefull methods to form variable exposed to scope by `name="myform"` attribute.
  *
  * @namespace editable-form
@@ -1643,8 +1687,8 @@ angular.module('xeditable').directive('editableForm',
 
             /**
              * Called when form is shown.
-             * 
-             * @var {method|attribute} onshow 
+             *
+             * @var {method|attribute} onshow
              * @memberOf editable-form
              */
             if(attrs.onshow) {
@@ -1653,8 +1697,8 @@ angular.module('xeditable').directive('editableForm',
 
             /**
              * Called when form hides after both save or cancel.
-             * 
-             * @var {method|attribute} onhide 
+             *
+             * @var {method|attribute} onhide
              * @memberOf editable-form
              */
             if(attrs.onhide) {
@@ -1663,7 +1707,7 @@ angular.module('xeditable').directive('editableForm',
 
             /**
              * Called when form is cancelled.
-             * 
+             *
              * @var {method|attribute} oncancel
              * @memberOf editable-form
              */
@@ -1684,7 +1728,7 @@ angular.module('xeditable').directive('editableForm',
             /**
              * Action when form losses focus. Values: `cancel|submit|ignore`.
              * Default is `ignore`.
-             * 
+             *
              * @var {string|attribute} blur
              * @memberOf editable-form
              */
@@ -1694,13 +1738,13 @@ angular.module('xeditable').directive('editableForm',
             if(!attrs.ngSubmit && !attrs.submit) {
               /**
                * Called after all children `onbeforesave` callbacks but before saving form values
-               * to model.  
-               * If at least one children callback returns `non-string` - it will not not be called.  
+               * to model.
+               * If at least one children callback returns `non-string` - it will not not be called.
                * See [editable-form demo](#editable-form) for details.
-               * 
+               *
                * @var {method|attribute} onbeforesave
                * @memberOf editable-form
-               * 
+               *
                */
               if(attrs.onbeforesave) {
                 eForm.$onbeforesave = function() {
@@ -1709,12 +1753,12 @@ angular.module('xeditable').directive('editableForm',
               }
 
               /**
-               * Called when form values are saved to model.  
+               * Called when form values are saved to model.
                * See [editable-form demo](#editable-form) for details.
-               * 
-               * @var {method|attribute} onaftersave 
+               *
+               * @var {method|attribute} onaftersave
                * @memberOf editable-form
-               * 
+               *
                */
               if(attrs.onaftersave) {
                 eForm.$onaftersave = function() {
@@ -1741,13 +1785,14 @@ angular.module('xeditable').directive('editableForm',
               if (eForm.$visible) {
                 eForm._clicked = true;
               }
-            });   
+            });
 
           }
         };
       }
     };
 }]);
+
 /**
  * editablePromiseCollection
  *  
@@ -2472,7 +2517,7 @@ angular.module('xeditable').factory('editableThemes', function() {
       cancelTpl:   '<button type="button" class="btn btn-default" ng-click="$form.$cancel()">'+
                      '<span></span>'+
                    '</button>',
-      resetTpl:    '<button type="reset" class="btn btn-danger"><span></span></button>',
+      resetTpl:    '<button type="button" class="btn btn-danger" ng-click="$form.$reset();"><span></span></button>',
 
       //bs3 specific prop to change buttons class: btn-sm, btn-lg
       buttonsClass: '',

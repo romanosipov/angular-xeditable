@@ -1,5 +1,5 @@
 /**
- * EditableForm directive. Should be defined in <form> containing editable controls.  
+ * EditableForm directive. Should be defined in <form> containing editable controls.
  * It add some usefull methods to form variable exposed to scope by `name="myform"` attribute.
  *
  * @namespace editable-form
@@ -55,8 +55,8 @@ angular.module('xeditable').directive('editableForm',
 
             /**
              * Called when form is shown.
-             * 
-             * @var {method|attribute} onshow 
+             *
+             * @var {method|attribute} onshow
              * @memberOf editable-form
              */
             if(attrs.onshow) {
@@ -65,8 +65,8 @@ angular.module('xeditable').directive('editableForm',
 
             /**
              * Called when form hides after both save or cancel.
-             * 
-             * @var {method|attribute} onhide 
+             *
+             * @var {method|attribute} onhide
              * @memberOf editable-form
              */
             if(attrs.onhide) {
@@ -75,7 +75,7 @@ angular.module('xeditable').directive('editableForm',
 
             /**
              * Called when form is cancelled.
-             * 
+             *
              * @var {method|attribute} oncancel
              * @memberOf editable-form
              */
@@ -96,7 +96,7 @@ angular.module('xeditable').directive('editableForm',
             /**
              * Action when form losses focus. Values: `cancel|submit|ignore`.
              * Default is `ignore`.
-             * 
+             *
              * @var {string|attribute} blur
              * @memberOf editable-form
              */
@@ -106,13 +106,13 @@ angular.module('xeditable').directive('editableForm',
             if(!attrs.ngSubmit && !attrs.submit) {
               /**
                * Called after all children `onbeforesave` callbacks but before saving form values
-               * to model.  
-               * If at least one children callback returns `non-string` - it will not not be called.  
+               * to model.
+               * If at least one children callback returns `non-string` - it will not not be called.
                * See [editable-form demo](#editable-form) for details.
-               * 
+               *
                * @var {method|attribute} onbeforesave
                * @memberOf editable-form
-               * 
+               *
                */
               if(attrs.onbeforesave) {
                 eForm.$onbeforesave = function() {
@@ -121,12 +121,12 @@ angular.module('xeditable').directive('editableForm',
               }
 
               /**
-               * Called when form values are saved to model.  
+               * Called when form values are saved to model.
                * See [editable-form demo](#editable-form) for details.
-               * 
-               * @var {method|attribute} onaftersave 
+               *
+               * @var {method|attribute} onaftersave
                * @memberOf editable-form
-               * 
+               *
                */
               if(attrs.onaftersave) {
                 eForm.$onaftersave = function() {
@@ -153,7 +153,7 @@ angular.module('xeditable').directive('editableForm',
               if (eForm.$visible) {
                 eForm._clicked = true;
               }
-            });   
+            });
 
           }
         };
